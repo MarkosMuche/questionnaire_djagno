@@ -1,3 +1,6 @@
 
 langchain==0.0.134
 djangorestframework==3.14.0
+python-dotenv==1.0.0
+openai==0.27.4
+
