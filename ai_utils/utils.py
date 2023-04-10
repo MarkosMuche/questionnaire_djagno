@@ -7,28 +7,24 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-template_insight = """Assistant is a large language model trained by OpenAI.
+template_insight = """""i want you to summerized the given question and answeer  and give me accurate summerized statement
+Summarize the key personal values discussed in the Q&A session, including the importance of these values in shaping one's beliefs, actions, and relationships. Provide a brief overview of how these values can help individuals live fulfilling and meaningful lives.you must understand Q as question 1,2,3,4 are different answers for that question and quentue
 
-Assistant is designed to be able to assist with a wide range of tasks, from answering simple questions to providing in-depth explanations and discussions on a wide range of topics. As a language model, Assistant is able to generate human-like text based on the input it receives, allowing it to engage in natural-sounding conversations and provide responses that are coherent and relevant to the topic at hand.
+This prompt aims to capture the main ideas and key points of the Q&A session on personal values, highlighting the significance of these values in shaping individual identity, behavior, and social interactions. The summary should focus on the values that were discussed, such as honesty, integrity, empathy, kindness, respect, and responsibility, and how they can contribute to personal growth, happiness, and well-being. It should also emphasize the role of personal values in guiding decision-making, establishing priorities, and fostering positive relationships with others.
 
-Assistant is constantly learning and improving, and its capabilities are constantly evolving. It is able to process and understand large amounts of text, and can use this knowledge to provide accurate and informative responses to a wide range of questions. Additionally, Assistant is able to generate its own text based on the input it receives, allowing it to engage in discussions and provide explanations and descriptions on a wide range of topics.
 
-Overall, Assistant is a powerful tool that can help with a wide range of tasks and provide valuable insights and information on a wide range of topics. Whether you need help with a specific question or just want to have a conversation about a particular topic, Assistant is here to assist.
+
+
 
 
 Human: {human_input}
+please give me persons vision based on the above data
 Assistant:"""
 
-template_vision = """Assistant is a large language model trained by OpenAI.
-
-Assistant is designed to be able to assist with a wide range of tasks, from answering simple questions to providing in-depth explanations and discussions on a wide range of topics. As a language model, Assistant is able to generate human-like text based on the input it receives, allowing it to engage in natural-sounding conversations and provide responses that are coherent and relevant to the topic at hand.
-
-Assistant is constantly learning and improving, and its capabilities are constantly evolving. It is able to process and understand large amounts of text, and can use this knowledge to provide accurate and informative responses to a wide range of questions. Additionally, Assistant is able to generate its own text based on the input it receives, allowing it to engage in discussions and provide explanations and descriptions on a wide range of topics.
-
-Overall, Assistant is a powerful tool that can help with a wide range of tasks and provide valuable insights and information on a wide range of topics. Whether you need help with a specific question or just want to have a conversation about a particular topic, Assistant is here to assist.
-
-
+template_vision = """"
+Please provide me with a vision statement that reflects your core values and aspirations, based on your responses to the following 10 personal value questions. For each question, you provided four possible answers (1, 2, 3, 4). Please review your answers and use them to guide your vision statement.
 Human: {human_input}
+Please use these questions and answers to craft a vision statement that reflects your core values and aspirations. Your vision statement should be a clear and concise statement that reflects who you are, what you want to achieve, and what you stand for. Consider your personal and professional goals, your values, and your passions when crafting your vision statement. i have give you more detail date about me, please give me a more more detail vision statement "
 Assistant:"""
 
 prompt_insight = PromptTemplate(
@@ -37,7 +33,7 @@ prompt_insight = PromptTemplate(
 )
 prompt_vision = PromptTemplate(
     input_variables=["human_input"], 
-    template=template_insight
+    template=template_vision
 )
 
 
@@ -63,12 +59,6 @@ def get_vision_statement(data):
     vision_statement = chain_vision.predict(human_input = insights)
 
     return vision_statement
-
-
-
-
-
-
 
 def get_chatbot_response(prompt):
 
