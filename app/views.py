@@ -9,6 +9,7 @@ class MainView(APIView):
     def post(self, request):
 
         data = request.data
+        print('////////////////////////////////////////////////////////////////////')
         print(data)
 
         vision_statement = get_vision_statement(data)
