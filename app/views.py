@@ -17,7 +17,7 @@ class MainView(APIView):
     def post(self, request):
         data = request.data
         print(data)
-        email=data['Email']
+        email=data['Email:']
         print(email)
         config = Config('.env')
         print('solomon')
