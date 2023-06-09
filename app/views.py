@@ -12,7 +12,8 @@ class MainView(APIView):
         print('////////////////////////////////////////////////////////////////////')
         print(data)
 
-        vision_statement = get_vision_statement(data)
+        # vision_statement = get_vision_statement(data)
+        vision_statement = data
 
         return Response(vision_statement)
         
