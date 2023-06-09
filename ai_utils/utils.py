@@ -13,7 +13,7 @@ key personal values discussed in the Q&A session, including the
 importance of these values in shaping one's beliefs, actions, and 
 relationships. Provide a brief overview of how these values can help 
 individuals live fulfilling and meaningful lives.you must understand 
-Q as question 1,2,3,4 are different answers for that question and quentue
+Q as question 1,2,3,4 are different answers for that question.
 
 This prompt aims to capture the main ideas and key points of the Q&A 
 session on personal values, highlighting the significance of these values
@@ -23,9 +23,6 @@ integrity, empathy, kindness, respect, and responsibility, and how they
 can contribute to personal growth, happiness, and well-being. It should 
 also emphasize the role of personal values in guiding decision-making,
 establishing priorities, and fostering positive relationships with others.
-
-
-
 
 
 
