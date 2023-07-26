@@ -1,6 +1,8 @@
 
 
 from langchain import OpenAI, LLMChain, PromptTemplate
+from langchain.chat_models import ChatOpenAI
+
 from langchain.memory import ConversationBufferWindowMemory
 from dotenv import load_dotenv
 
@@ -54,8 +56,9 @@ prompt_vision = PromptTemplate(
 )
 
 
-llm_insight = OpenAI(temperature=0, model_name='text-davinci-003')
-llm_vision = OpenAI(temperature=0, model_name='text-davinci-003')
+llm_insight = ChatOpenAI(temperature=0, model_name='gpt-3.5-turbo')
+llm_vision = ChatOpenAI(temperature=0, model_name='gpt-3.5-turbo')
+
 
 chain_insight = LLMChain(
     llm=llm_insight,

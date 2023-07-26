@@ -17,13 +17,12 @@ class MainView(APIView):
     def post(self, request):
         data = request.data
         print(data)
-        email=data['Email:']
+        email=data['email']
         print(email)
         config = Config('.env')
         print('solomon')
-        # vision_statement = get_vision_statement(data)
+        vision_statement = get_vision_statement(data)
         email_sender=config("email_sender")
-        vision_statement = data
         email_password=config("email_password")
         email_receiver=email
 
