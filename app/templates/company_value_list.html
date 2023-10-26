@@ -1,16 +1,24 @@
 
 {% extends "./base.html" %}
-{%block msg%}
+{% block msg %}
 
-<h1 style="color: burlywood; text-align: center; margin-bottom: 60px;">this is your compnay value list</h1>
+<h1 style="color: burlywood; text-align: center; margin-bottom: 60px;">Select Company Values</h1>
 
+<form method="post" action="{% url 'get-vision' %}">  <!-- Update the 'action' with the correct URL -->
+    {% csrf_token %}
+    <ul style="list-style-type: none;">
+        {% for value in company_value %}
+            <li style="margin-bottom: 10px;">
+                <input type="checkbox" name="company_values" value="{{ value }}" id="value_{{ forloop.counter }}">
+                <label for="value_{{ forloop.counter }}">{{ value }}</label>
+            </li>
+        {% endfor %}
+        <li>
+            <label for="other_choice">Other choice:</label>
+            <input type="text" id="other_choice" name="other_value">
+        </li>
+    </ul>
+    <button type="submit">Submit</button>
+</form>
 
-<ul style=" list-style-type: none;">
-    {% for value in company_value %}
-        <li style="width: 500px; display: inline;">{{ value }}</li>
-        <button style="display: block;">select</button>
-    {% endfor %}
-    <br>
-   other choice <input type="text">
-</ul>
-{%endblock%}
+{% endblock %}

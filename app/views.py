@@ -1,5 +1,6 @@
 # myapp/views.py
 
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from .forms import CompanyValueForm,PersonValueForm,AnswerForm
 from ai_utils.utils import get_vision_statement,get_company_value,get_person_value
@@ -15,7 +16,6 @@ def company_question(request):
             for field_name, field_value in form.cleaned_data.items():
                 questions_and_answers += f"Q: {field_name}\nA: {field_value}\n\n"
             company_value = get_company_value(questions_and_answers)
-            print(company_value)
             return render(request, 'company_value_list.html', {'company_value': company_value})
     else:
         form = CompanyValueForm()
@@ -48,9 +48,9 @@ def person_question(request):
                     answers = request.session.get(f'answers_for_question_{i + 1}', [])
                     questions_and_answers += f"Q: {question_text}\nA: {', '.join(answers)}\n\n"
                 print(questions_and_answers)
-                company_value = get_person_value(questions_and_answers)
+                person_value = get_person_value(questions_and_answers)
                 request.session.flush()
-                return render(request, 'person_value_list.html', {'company_value': company_value})
+                return render(request, 'person_value_list.html', {'company_value': person_value})
 
             # Otherwise move to the next question
             request.session['current_question_index'] = current_question_index + 1
@@ -67,3 +67,21 @@ def person_question(request):
     }
 
     return render(request, 'person_value_form.html', context)
+
+
+def submit_values(request):
+    if request.method == 'POST':
+        selected_values = request.POST.getlist('company_values')
+        other_value = request.POST.get('other_value', '').strip()
+
+        if other_value:
+            selected_values.append(other_value)
+        print(selected_values)
+
+        # Ensure that no more than 4 values are selected
+        selected_values = selected_values[:4]
+
+        # Process the values...
+        return HttpResponse("Values processed")
+    else:
+        return HttpResponse("Invalid request")

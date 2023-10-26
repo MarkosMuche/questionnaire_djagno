@@ -52,7 +52,7 @@ template_person_value = """"
 
 Human: {human_input}
 
-   Based on the provided information, please suggest up to 4 potential person values that might resonate with the client's business ethos. List each value followed by a brief description, separated by a colon, and return each value on a new line.
+   Based on the provided information, please suggest up to 4 potential 4 personal core values  that might resonate with the client's business ethos. List each value followed by a brief description, separated by a colon, and return each value on a new line.
 
 """
 
