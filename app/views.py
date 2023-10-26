@@ -2,7 +2,7 @@
 
 from django.shortcuts import redirect, render
 from .forms import CompanyValueForm,PersonValueForm,AnswerForm
-from ai_utils.utils import get_vision_statement,get_company_value
+from ai_utils.utils import get_vision_statement,get_company_value,get_person_value
 from .models import *
 
 
@@ -48,7 +48,7 @@ def person_question(request):
                     answers = request.session.get(f'answers_for_question_{i + 1}', [])
                     questions_and_answers += f"Q: {question_text}\nA: {', '.join(answers)}\n\n"
                 print(questions_and_answers)
-                company_value = get_vision_statement(questions_and_answers)
+                company_value = get_person_value(questions_and_answers)
                 request.session.flush()
                 return render(request, 'person_value_list.html', {'company_value': company_value})
 

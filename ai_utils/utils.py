@@ -34,24 +34,25 @@ please give me person's  4 personal core values.
 Assistant:"""
 
 template_vision = """"
-Please provide me with a person's  4 personal core values that reflects your core values 
-and aspirations, based on your responses to the datat provided , you provided four possible answers (1, 2, 3, 4). 
-Please review your answers and use them to guide person's  4 personal core values. 
 
 Human: {human_input}
-Please use these questions and answers to craft a vision statement that 
-reflects your core values and aspirations. person's  4 personal core values should be 
-a clear and concise statement that reflects who you are, what you want to 
-achieve, and what you stand for. Consider your personal and professional goals, 
-your values, and your passions when crafting your vision statement. i have give
- you more detail date about me, please give me a more more detail vision statement "
-Assistant:"""
+   Based on the provided information, please suggest up to 4 potential person values that might discribe the person that isnerts the data. List each value followed by a brief description, separated by a colon, and return each value on a new line.
+"""
 
-template_cvalue = """"
+template_company_value = """"
 
 Human: {human_input}
 
    Based on the provided information, please suggest up to 4 potential company values that might resonate with the client's business ethos. List each value followed by a brief description, separated by a colon, and return each value on a new line.
+
+"""
+
+
+template_person_value = """"
+
+Human: {human_input}
+
+   Based on the provided information, please suggest up to 4 potential person values that might resonate with the client's business ethos. List each value followed by a brief description, separated by a colon, and return each value on a new line.
 
 """
 
@@ -60,10 +61,16 @@ prompt_insight = PromptTemplate(
     template=template_insight
 )
 
-prompt_cvalue = PromptTemplate(
+prompt_company_value = PromptTemplate(
     input_variables=[ "human_input"], 
-    template=template_cvalue
+    template=template_company_value
 )
+
+prompt_person_value = PromptTemplate(
+    input_variables=[ "human_input"], 
+    template=template_person_value
+)
+
 
 prompt_vision = PromptTemplate(
     input_variables=["human_input"], 
@@ -81,9 +88,15 @@ chain_insight = LLMChain(
     verbose=False, 
 )
 
-chain_cvalue = LLMChain(
+chain_company_value = LLMChain(
     llm=llm_insight,
-    prompt=prompt_cvalue, 
+    prompt=prompt_company_value, 
+    verbose=False, 
+)
+
+chain_person_value = LLMChain(
+    llm=llm_insight,
+    prompt=prompt_person_value, 
     verbose=False, 
 )
 
@@ -95,9 +108,9 @@ chain_vision = LLMChain(
 
 def get_vision_statement(data):
     
-    insights = chain_insight.predict(human_input=data)
+    # insights = chain_insight.predict(human_input=data)
 
-    vision_statement = chain_vision.predict(human_input = insights)
+    vision_statement = chain_vision.predict(human_input = data)
 
     return vision_statement
 
@@ -109,10 +122,15 @@ def get_chatbot_response(prompt):
 
 def get_company_value(data):
     
-    compny_value = chain_cvalue.predict(human_input=data)
+    compny_value = chain_company_value.predict(human_input=data)
     compny_value=parse_llm_output(compny_value)
     return compny_value
 
+def get_person_value(data):
+    
+    compny_value = chain_person_value.predict(human_input=data)
+    compny_value=parse_llm_output(compny_value)
+    return compny_value
 
 
 def parse_llm_output(output_string):
