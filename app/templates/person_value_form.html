@@ -1,0 +1,9 @@
+<form method="post">
+    {% csrf_token %}
+    <h3>{{ question_text }}</h3>
+    {{ form.as_p }}
+
+    <button type="submit">
+        {% if is_last_question %}Send{% else %}Next{% endif %}
+    </button>
+</form>

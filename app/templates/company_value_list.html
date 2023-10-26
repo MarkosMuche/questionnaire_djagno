@@ -1,0 +1,16 @@
+
+{% extends "./base.html" %}
+{%block msg%}
+
+<h1 style="color: burlywood; text-align: center; margin-bottom: 60px;">this is your compnay value list</h1>
+
+
+<ul style=" list-style-type: none;">
+    {% for value in company_value %}
+        <li style="width: 500px; display: inline;">{{ value }}</li>
+        <button style="display: block;">select</button>
+    {% endfor %}
+    <br>
+   other choice <input type="text">
+</ul>
+{%endblock%}

@@ -1,8 +1,8 @@
-
-
 from django.urls import path
-from app.views import MainView
+from . import views
 
 urlpatterns = [
-    path('', MainView.as_view()),
+    path('person_question/', views.person_question, name='person_question'),
+    path('companyform/', views.company_question, name='ask_question'),
+
 ]

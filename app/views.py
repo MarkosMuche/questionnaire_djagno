@@ -1,42 +1,69 @@
+# myapp/views.py
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from ai_utils.utils import get_vision_statement
-from django.core.mail import send_mail
-from dotenv import load_dotenv
-from email.message import EmailMessage
-import ssl
-import smtplib
-from decouple import Config
-import json
+from django.shortcuts import redirect, render
+from .forms import CompanyValueForm,PersonValueForm,AnswerForm
+from ai_utils.utils import get_vision_statement,get_company_value
+from .models import *
 
 
 
-class MainView(APIView):
+def company_question(request):
+    if request.method == "POST":
+        form = CompanyValueForm(request.POST)
+        if form.is_valid():
+            questions_and_answers = ""
+            for field_name, field_value in form.cleaned_data.items():
+                questions_and_answers += f"Q: {field_name}\nA: {field_value}\n\n"
+            company_value = get_company_value(questions_and_answers)
+            print(company_value)
+            return render(request, 'company_value_list.html', {'company_value': company_value})
+    else:
+        form = CompanyValueForm()
 
-    def post(self, request):
-        data = request.data
-        print(data)
-        email=data['email']
-        print(email)
-        config = Config('.env')
-        print('solomon')
-        vision_statement = get_vision_statement(data)
-        email_sender=config("email_sender")
-        email_password=config("email_password")
-        email_receiver=email
+    return render(request, 'company_value_from.html', {'form': form})
 
-        subject='your vision'
-        body = json.dumps(vision_statement)
 
-        em=EmailMessage()
-        em['From']=email_sender
-        em['To']=email_receiver
-        em['subject']=subject
-        em.set_content(body)
 
-        context=ssl.create_default_context()
-        with smtplib.SMTP_SSL('smtp.gmail.com',465,context=context) as smtp:
-            smtp.login(email_sender,email_password)
-            smtp.sendmail(email_sender,email_receiver,em.as_string())
-        return Response('')       
+def person_question(request):
+    questions = Question.objects.all()
+    num_questions = questions.count()
+    current_question_index = request.session.get('current_question_index', 0)
+
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            # Save answers to session
+            request.session[f'answers_for_question_{current_question_index + 1}'] = [
+                form.cleaned_data['answer_1'],
+                form.cleaned_data['answer_2'],
+                form.cleaned_data['answer_3'],
+                form.cleaned_data['answer_4']
+            ]
+
+            # If it's the last question
+            if current_question_index == num_questions - 1:
+                questions_and_answers = ''
+                for i in range(num_questions):
+                    question_text = questions[i].text
+                    answers = request.session.get(f'answers_for_question_{i + 1}', [])
+                    questions_and_answers += f"Q: {question_text}\nA: {', '.join(answers)}\n\n"
+                print(questions_and_answers)
+                company_value = get_vision_statement(questions_and_answers)
+                request.session.flush()
+                return render(request, 'person_value_list.html', {'company_value': company_value})
+
+            # Otherwise move to the next question
+            request.session['current_question_index'] = current_question_index + 1
+            return redirect('person_question')
+
+    else:
+        current_question = questions[current_question_index]
+        form = AnswerForm()
+
+    context = {
+        'form': form,
+        'question_text': current_question.text,
+        'is_last_question': current_question_index == num_questions - 1
+    }
+
+    return render(request, 'person_value_form.html', context)
