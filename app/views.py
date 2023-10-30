@@ -32,7 +32,6 @@ def person_question(request):
     if request.method == "POST":
         form = AnswerForm(request.POST)
         if form.is_valid():
-            # Save answers to session
             request.session[f'answers_for_question_{current_question_index + 1}'] = [
                 form.cleaned_data['answer_1'],
                 form.cleaned_data['answer_2'],
@@ -40,19 +39,18 @@ def person_question(request):
                 form.cleaned_data['answer_4']
             ]
 
-            # If it's the last question
             if current_question_index == num_questions - 1:
                 questions_and_answers = ''
                 for i in range(num_questions):
                     question_text = questions[i].text
                     answers = request.session.get(f'answers_for_question_{i + 1}', [])
                     questions_and_answers += f"Q: {question_text}\nA: {', '.join(answers)}\n\n"
-                print(questions_and_answers)
                 person_value = get_person_value(questions_and_answers)
-                request.session.flush()
-                return render(request, 'person_value_list.html', {'company_value': person_value})
+                request.session['person_value'] = person_value  # Store in session
+                # request.session.flush()
+                return redirect('ask_question')
 
-            # Otherwise move to the next question
+
             request.session['current_question_index'] = current_question_index + 1
             return redirect('person_question')
 
@@ -71,15 +69,19 @@ def person_question(request):
 
 def submit_values(request):
     if request.method == 'POST':
-        selected_values = request.POST.getlist('company_values')
+        company_value = request.POST.getlist('company_values')
         other_value = request.POST.get('other_value', '').strip()
-
         if other_value:
-            selected_values.append(other_value)
-        print(selected_values)
-
-        # Ensure that no more than 4 values are selected
-        selected_values = selected_values[:4]
+            company_value.append(other_value)
+        person_value = request.session.get('person_value', None)
+        request.session.flush()
+        general_data=f'''Person Value:{person_value}  
+        
+       
+        company value:{company_value}'''
+        
+        print(general_data)
+        company_value = company_value[:4]
 
         # Process the values...
         return HttpResponse("Values processed")
