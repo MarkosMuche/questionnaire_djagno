@@ -70,9 +70,9 @@ def person_question(request):
 def submit_values(request):
     if request.method == 'POST':
         company_value = request.POST.getlist('company_values')
-        other_value = request.POST.get('other_value', '').strip()
+        other_value = request.POST.getlist('other_value', '')
         if other_value:
-            company_value.append(other_value)
+            company_value=company_value + other_value
         person_value = request.session.get('person_value', None)
         request.session.flush()
         general_data=f'''Person Value:{person_value}  
