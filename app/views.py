@@ -67,7 +67,7 @@ def person_question(request):
 
     return render(request, 'person_value_form.html', context)
 
-
+@login_required
 def submit_values(request):
     if request.method == 'POST':
         company_values = request.POST.getlist('company_values')
@@ -77,7 +77,7 @@ def submit_values(request):
         person_values = request.session.get('person_value', None)
         request.session.flush()
         User = get_user_model()
-        user_instance = User.objects.get(pk=1) 
+        user_instance = User.objects.get(pk=request.user.id) 
         for company_value in company_values:
             # Save or retrieve the company value
             company_value_obj, created = CompanyValue.objects.get_or_create(value=company_value,user=user_instance)
@@ -93,14 +93,14 @@ def submit_values(request):
 
 
 
-
+@login_required
 def display_company_values(request):
     if request.user.is_authenticated:
         # Fetch the four latest company values for the logged-in user
         # Order by 'created_at' to get the most recent, or use '-id' for the latest by ID
-        User = get_user_model()
-        user_instance = User.objects.get(pk=1) 
-        company_values = CompanyValue.objects.filter(user=user_instance).order_by('-created_at')[:4]
+        user=request.user.id
+        company_values = CompanyValue.objects.filter(user=user).order_by('-created_at')[:4]
+        print(company_values)
 
         data = [{
             'value': value,
