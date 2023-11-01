@@ -36,7 +36,7 @@ Assistant:"""
 template_vision = """"
 
 Human: {human_input}
-   Based on the provided information, please suggest up to 4 potential person values that might discribe the person that isnerts the data. List each value followed by a brief description, separated by a colon, and return each value on a new line.
+   Based on the provided information, please suggest up to 4 potential company values that might resonate with the client's business ethos. List each value followed by a brief description, separated by a colon, and return each value on a new line.
 """
 
 template_company_value = """"
@@ -46,6 +46,15 @@ Human: {human_input}
    Based on the provided information, please suggest up to 4 potential company values that might resonate with the client's business ethos. List each value followed by a brief description, separated by a colon, and return each value on a new line.
 
 """
+
+template_value_idea = """"
+
+Human: {human_input}
+
+   Based on the provided information, please suggest up to 10 potential ideas that might discribed the selected company value  how they can begin integrating their chosen values into their company. List each idea, separated by a colon, and return each value on a new line.
+
+"""
+
 
 
 template_person_value = """"
@@ -64,6 +73,11 @@ prompt_insight = PromptTemplate(
 prompt_company_value = PromptTemplate(
     input_variables=[ "human_input"], 
     template=template_company_value
+)
+
+prompt_value_idea = PromptTemplate(
+    input_variables=[ "human_input"], 
+    template=template_value_idea
 )
 
 prompt_person_value = PromptTemplate(
@@ -94,6 +108,13 @@ chain_company_value = LLMChain(
     verbose=False, 
 )
 
+chain_value_idea = LLMChain(
+    llm=llm_insight,
+    prompt=prompt_value_idea, 
+    verbose=False, 
+)
+
+
 chain_person_value = LLMChain(
     llm=llm_insight,
     prompt=prompt_person_value, 
@@ -123,6 +144,12 @@ def get_chatbot_response(prompt):
 def get_company_value(data):
     
     compny_value = chain_company_value.predict(human_input=data)
+    compny_value=parse_llm_output(compny_value)
+    return compny_value
+
+def get_value_ideas(data):
+    
+    compny_value = chain_value_idea.predict(human_input=data)
     compny_value=parse_llm_output(compny_value)
     return compny_value
 

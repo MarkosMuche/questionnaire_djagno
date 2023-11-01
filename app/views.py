@@ -3,8 +3,9 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from .forms import CompanyValueForm,PersonValueForm,AnswerForm
-from ai_utils.utils import get_vision_statement,get_company_value,get_person_value
+from ai_utils.utils import get_vision_statement,get_company_value,get_person_value,get_value_ideas
 from .models import *
+from django.contrib.auth import get_user_model
 
 
 
@@ -69,21 +70,23 @@ def person_question(request):
 
 def submit_values(request):
     if request.method == 'POST':
-        company_value = request.POST.getlist('company_values')
-        other_value = request.POST.getlist('other_value', '')
-        if other_value:
-            company_value=company_value + other_value
-        person_value = request.session.get('person_value', None)
-        request.session.flush()
-        general_data=f'''Person Value:{person_value}  
-        
-       
-        company value:{company_value}'''
-        
-        print(general_data)
-        company_value = company_value[:4]
+        company_values = request.POST.getlist('company_values')
+        other_values = request.POST.getlist('other_value')
+        company_values.extend(other_values)  # Combine the lists
 
-        # Process the values...
-        return HttpResponse("Values processed")
-    else:
-        return HttpResponse("Invalid request")
+        person_values = request.session.get('person_value', None)
+        request.session.flush()
+        User = get_user_model()
+        user_instance = User.objects.get(pk=1) 
+        for company_value in company_values:
+            # Save or retrieve the company value
+            company_value_obj, created = CompanyValue.objects.get_or_create(value=company_value,user=user_instance)
+            ideas = get_value_ideas(company_value)
+            print(ideas)
+            x=0
+            for  idea in ideas:
+                x=x+1
+                print(x)
+                VisionIdea.objects.create(company_value=company_value_obj, idea=idea)
+
+    return redirect('ask_question')
