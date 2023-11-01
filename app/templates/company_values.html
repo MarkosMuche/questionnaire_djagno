@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block msg %}
+<p>solomon</p>
+    <h2>Company Values and Ideas</h2>
+    {% for item in data %}
+        <div>
+            <h3>{{ item.value.value }}</h3>
+            <ul>
+                {% for idea in item.ideas %}
+                    <li>{{ idea.idea }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% empty %}
+        <p>No company values found.</p>
+    {% endfor %}
+{% endblock %}

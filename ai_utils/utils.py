@@ -51,7 +51,7 @@ template_value_idea = """"
 
 Human: {human_input}
 
-   Based on the provided information, please suggest up to 10 potential ideas that might discribed the selected company value  how they can begin integrating their chosen values into their company. List each idea, separated by a colon, and return each value on a new line.
+   Based on the provided information, please suggest onely 10 potential ideas that might discribed the selected company value  how they can begin integrating their chosen values into their company. List each idea, separated by a colon, and return each value on a new line. i don't want any additional ideas i only need just 10 ideas
 
 """
 

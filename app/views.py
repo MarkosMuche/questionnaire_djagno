@@ -6,7 +6,7 @@ from .forms import CompanyValueForm,PersonValueForm,AnswerForm
 from ai_utils.utils import get_vision_statement,get_company_value,get_person_value,get_value_ideas
 from .models import *
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.decorators import login_required
 
 
 def company_question(request):
@@ -89,4 +89,23 @@ def submit_values(request):
                 print(x)
                 VisionIdea.objects.create(company_value=company_value_obj, idea=idea)
 
-    return redirect('ask_question')
+    return redirect('display_values')
+
+
+
+
+def display_company_values(request):
+    if request.user.is_authenticated:
+        # Fetch the four latest company values for the logged-in user
+        # Order by 'created_at' to get the most recent, or use '-id' for the latest by ID
+        User = get_user_model()
+        user_instance = User.objects.get(pk=1) 
+        company_values = CompanyValue.objects.filter(user=user_instance).order_by('-created_at')[:4]
+
+        data = [{
+            'value': value,
+            'ideas': value.vision_ideas.all()
+        } for value in company_values]
+
+        return render(request, 'company_values.html', {'data': data})
+    

@@ -19,6 +19,8 @@ from django.db import models
 class CompanyValue(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     value = models.CharField(max_length=255, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp field
+
 
 class VisionIdea(models.Model):
     company_value = models.ForeignKey(CompanyValue, on_delete=models.CASCADE, related_name='vision_ideas')
