@@ -93,7 +93,7 @@ def submit_values(request):
         company_values.extend(other_values)  # Combine the lists
 
         person_values = request.session.get('person_value', None)
-        request.session.flush()
+        # request.session.flush()
         User = get_user_model()
         user_instance = User.objects.get(pk=request.user.id) 
         for company_value in company_values:
@@ -113,17 +113,15 @@ def submit_values(request):
 
 @login_required
 def display_company_values(request):
-    if request.user.is_authenticated:
-        # Fetch the four latest company values for the logged-in user
-        # Order by 'created_at' to get the most recent, or use '-id' for the latest by ID
-        user=request.user.id
-        company_values = CompanyValue.objects.filter(user=user).order_by('-created_at')[:4]
-        print(company_values)
+   
+    user=request.user.id
+    company_values = CompanyValue.objects.filter(user=user).order_by('-created_at')[:4]
+    print(company_values)
 
-        data = [{
-            'value': value,
-            'ideas': value.vision_ideas.all()
-        } for value in company_values]
+    data = [{
+        'value': value,
+        'ideas': value.vision_ideas.all()
+    } for value in company_values]
 
-        return render(request, 'company_values.html', {'data': data})
+    return render(request, 'company_values.html', {'data': data})
     
