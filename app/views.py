@@ -7,8 +7,26 @@ from ai_utils.utils import get_vision_statement,get_company_value,get_person_val
 from .models import *
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views import generic
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import views as auth_views
 
 
+class SignUpView(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('ask_question')
+    template_name = 'signup.html'
+
+
+
+class LoginView(auth_views.LoginView):
+    form_class = AuthenticationForm
+    template_name = 'login.html'
+
+    
+@login_required
 def company_question(request):
     if request.method == "POST":
         form = CompanyValueForm(request.POST)
@@ -24,7 +42,7 @@ def company_question(request):
     return render(request, 'company_value_from.html', {'form': form})
 
 
-
+@login_required
 def person_question(request):
     questions = Question.objects.all()
     num_questions = questions.count()
