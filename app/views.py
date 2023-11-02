@@ -116,7 +116,7 @@ def display_company_values(request):
    
     user=request.user.id
     company_values = CompanyValue.objects.filter(user=user).order_by('-created_at')[:4]
-    print(company_values)
+    company_values = list(reversed(company_values))
 
     data = [{
         'value': value,
