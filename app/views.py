@@ -86,7 +86,7 @@ def person_question(request):
             return redirect("person_question")
 
     else:
-        if(questions.lenth==0):
+        if(questions is  None):
             return HttpResponse('ther is no questions')
         current_question = questions[current_question_index]
         form = AnswerForm()
