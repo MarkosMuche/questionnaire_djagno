@@ -1,8 +1,17 @@
 {% extends "base.html" %}
 
 {% block msg %}
-    <h2>Company Values and Ideas</h2>
-    {% for item in data %}
+
+   <h2>Person values </h2>
+   <ul style="list-style-type: none;">
+    {%for value in context.person_data%}
+    
+      <li>{{value.value}}</li>
+
+    {% endfor %}
+</ul>
+    <h2 style="margin-top: 50px;">Company Values and Ideas</h2>
+    {% for item in context.company__data %}
         <div>
             <h3>{{ item.value.value }}</h3>
             <ul style="list-style-type: none;">
