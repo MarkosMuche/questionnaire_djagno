@@ -50,7 +50,6 @@ def company_question(request):
 @login_required
 def person_question(request):
     questions = Question.objects.all()
-    print(questions)
     num_questions = questions.count()
     current_question_index = request.session.get('current_question_index', 0)
 
@@ -80,6 +79,7 @@ def person_question(request):
                  value=person_value, user=user_instance
                  )
 
+                request.session.pop(f"current_question_index", 0)
                 return redirect("ask_question")
 
             request.session["current_question_index"] = current_question_index + 1
