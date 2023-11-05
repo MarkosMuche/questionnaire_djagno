@@ -35,4 +35,10 @@ class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         fields = ['answer_1', 'answer_2', 'answer_3', 'answer_4']
+        widgets = {
+            'answer_1': forms.TextInput(attrs={'class': 'input-min-height input-max-width'}),
+            'answer_2': forms.TextInput(attrs={'class': 'input-min-height input-max-width'}),
+            'answer_3': forms.TextInput(attrs={'class': 'input-min-height input-max-width'}),
+            'answer_4': forms.TextInput(attrs={'class': 'input-min-height input-max-width'}),
+        }
 

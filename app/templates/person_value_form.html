@@ -1,9 +1,23 @@
-<form method="post">
+{% extends "base.html" %}
+
+{% block msg %}
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('myForm').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('submitBtn').click();
+        }
+    });
+});
+</script>
+
+<form id="myForm" method="post">
     {% csrf_token %}
     <h3>{{ question_text }}</h3>
     {{ form.as_p }}
 
-    <button type="submit">
+    <button id="submitBtn" type="submit">
         {% if is_last_question %}Send{% else %}Next{% endif %}
     </button>
 </form>
+{% endblock %}

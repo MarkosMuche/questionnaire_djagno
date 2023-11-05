@@ -1,0 +1,12 @@
+/* static/css/styles.css */
+
+body{
+    background-color: red;
+}
+.input-min-height {
+    height: 100px; /* or any height you prefer */
+}
+
+.input-max-width {
+    width: 600px; /* or any width you prefer */
+}
