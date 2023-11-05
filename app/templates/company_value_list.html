@@ -12,13 +12,13 @@
                 <label for="value_{{ forloop.counter }}">{{ value }}</label>
             </li>
         {% endfor %}
-        <li>
-            <label for="other_choice">Other choice:</label>
+        <li><br>
+            <label for="other_choice" style="color: brown;">If you don't like the above values you can enter yours</label>
             <br>
-            <input type="text" id="other_choice1" name="other_value" class="other-input">
-            <input type="text" id="other_choice2" name="other_value" class="other-input">
-            <input type="text" id="other_choice3" name="other_value" class="other-input">
-            <input type="text" id="other_choice4" name="other_value" class="other-input">
+            1<input style="margin: 20px; width: 500px;  height: 40px" type="text" id="other_choice1" name="other_value" class="other-input"><br>
+            2<input style="margin: 20px; width: 500px;  height: 40px" type="text" id="other_choice2" name="other_value" class="other-input"><br>
+            3<input style="margin: 20px; width: 500px;  height: 40px" type="text" id="other_choice3" name="other_value" class="other-input"><br>
+            4<input style="margin: 20px; width: 500px; height: 40px" type="text" id="other_choice4" name="other_value" class="other-input">
         </li>
     </ul>
     <button type="submit">Submit</button>

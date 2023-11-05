@@ -1,44 +1,51 @@
 {% extends "./base.html" %}
-{%block msg%}
-  <style>
-        textarea.form-control {
-            height: 100px; 
-            width: 80%; 
+
+{% block msg %}
+<style>
+    textarea.form-control {
+        height: 100px;
+        width: 80%;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('myForm').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('submitBtn').click();
         }
-    </style>
-</head>
+    });
+});
+</script>
 
-<div class=" mt-">
+<div class="mt-4">
+    <h1 style="color: burlywood; text-align: center; margin-bottom: 60px;">Welcome to Your Company's Values Assessment</h1>
 
-    <h1 style="color: burlywood; text-align: center; margin-bottom: 60px;">welcome to  your Company  Value's Assessment</h1>
-
-    <form method="post">
+    <form id="myForm" method="post">
         {% csrf_token %}
         <div style="margin-left: 200px;">
-        {% for field in form %}
-        <div class="row mb-3">
-            <!-- Form Field Label -->
-            <div class="col-md-4">
-                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label_tag }}</label>
-            </div>
-
-            <div class="col-md-12">
-                {{ field }}
-                {% if field.help_text %}
-                <small class="form-text text-muted">{{ field.help_text }}</small>
-                {% endif %}
-                {% if field.errors %}
-                <div class="invalid-feedback">
-                    {{ field.errors|join:", " }}
+            {% for field in form %}
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label_tag }}</label>
                 </div>
-                {% endif %}
+
+                <div class="col-md-12">
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                    <div class="invalid-feedback">
+                        {{ field.errors|join:", " }}
+                    </div>
+                    {% endif %}
+                </div>
             </div>
+            {% endfor %}
+
+            <button id="submitBtn" type="submit" class="btn btn-primary">Send</button>
         </div>
-        {% endfor %}
-
-        <button type="submit" class="btn btn-primary">send</button>
-    </div>
-
     </form>
 </div>
-{%endblock%}
+{% endblock %}
